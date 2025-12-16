@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus - Pontual Consignados</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="ATUALIZAÇÃO.CSS">
+</head>
+<body>
+
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <img src="LOGO V.svg" alt="Logo Nexus" class="logo-img">
+        </div>
+
+        <ul class="nav-list">
+            <li class="active">
+                <i class="fas fa-chart-line"></i>
+                <span class="tooltip">Dashboard</span>
+            </li>
+            <li>
+                <i class="fas fa-users"></i>
+                <span class="tooltip">Clientes</span>
+            </li>
+            <li>
+                <i class="fas fa-file-invoice-dollar"></i>
+                <span class="tooltip">Contratos</span>
+            </li>
+            <li>
+                <i class="fas fa-sync"></i>
+                <span class="tooltip">Importar</span>
+            </li>
+            <li>
+                <i class="fas fa-cog"></i>
+                <span class="tooltip">Configurações</span>
+            </li>
+        </ul>
+        
+        <div class="sidebar-footer">
+            <li class="btn-tema" onclick="alternarTema()">
+                <i class="fas fa-moon" id="icon-tema"></i>
+                <span class="tooltip" id="text-tema">Modo Escuro</span>
+            </li>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <header>
+            <h1 class="header-title">Visão Geral da Operação</h1>
+        </header>
+
+        <section class="kpi-container">
+            <div class="kpi-card">
+                <h3>Produção Hoje</h3>
+                <div class="value" id="kpi-producao-hoje">R$ 0,00</div>
+                <div class="subtext" id="kpi-contratos-hoje">0 Contratos</div>
+            </div>
+            <div class="kpi-card">
+                <h3>Produção Total</h3>
+                <div class="value" id="kpi-producao-total">R$ 0,00</div>
+                <div class="subtext" id="kpi-contratos-total">0 Contratos</div>
+            </div>
+            <div class="kpi-card">
+                <h3>Ticket Médio</h3>
+                <div class="value" id="kpi-ticket-medio">R$ 0,00</div>
+                <div class="subtext">Geral</div>
+            </div>
+            <div class="kpi-card">
+                <h3>Efetivação</h3>
+                <div class="value" id="kpi-efetivacao">0%</div>
+                <div class="subtext">Pagos vs Total</div>
+            </div>
+        </section>
+
+        <section class="status-container">
+            <div class="status-card bg-digitacao">
+                <h4>Digitação</h4>
+                <div class="status-value" id="card-digitacao-valor">R$ 0,00</div>
+                <span class="status-count" id="card-digitacao-qtd">0 contratos</span>
+                <i class="fas fa-keyboard"></i>
+            </div>
+            <div class="status-card bg-formalizacao">
+                <h4>Formalização</h4>
+                <div class="status-value" id="card-formalizacao-valor">R$ 0,00</div>
+                <span class="status-count" id="card-formalizacao-qtd">0 contratos</span>
+                <i class="fas fa-file-signature"></i>
+            </div>
+            <div class="status-card bg-andamento">
+                <h4>Andamento</h4>
+                <div class="status-value" id="card-andamento-valor">R$ 0,00</div>
+                <span class="status-count" id="card-andamento-qtd">0 contratos</span>
+                <i class="fas fa-user-clock"></i>
+            </div>
+            <div class="status-card bg-pago">
+                <h4>Pago Cliente</h4>
+                <div class="status-value" id="card-pago-valor">R$ 0,00</div>
+                <span class="status-count" id="card-pago-qtd">0 contratos</span>
+                <i class="fas fa-sack-dollar"></i>
+            </div>
+            <div class="status-card bg-pendencia">
+                <h4>Pendência</h4>
+                <div class="status-value" id="card-pendencia-valor">R$ 0,00</div>
+                <span class="status-count" id="card-pendencia-qtd">0 contratos</span>
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="status-card bg-cancelado">
+                <h4>Cancelado</h4>
+                <div class="status-value" id="card-cancelado-valor">R$ 0,00</div>
+                <span class="status-count" id="card-cancelado-qtd">0 contratos</span>
+                <i class="fas fa-times-circle"></i>
+            </div>
+        </section>
+
+        <section class="table-container">
+            <div class="table-header">
+                <h3>Últimos Contratos</h3>
+                <button class="btn btn-save" onclick="simularImportacao()">
+                    <i class="fas fa-sync"></i> Atualizar
+                </button>
+            </div>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Proposta</th>
+                            <th>Cliente</th>
+                            <th>Valor</th>
+                            <th>Data</th>
+                            <th>Status</th>
+                            <th>Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <div class="modal-overlay" id="editModal">
+        <div class="modal">
+            <h2>Alterar Status</h2>
+            <div class="form-group">
+                <label>Cliente</label>
+                <input type="text" id="modal-cliente" disabled>
+            </div>
+            <br>
+            <div class="form-group">
+                <label>Novo Status</label>
+                <select id="modal-status">
+                    <option value="Digitação">Digitação</option>
+                    <option value="Formalização">Formalização</option>
+                    <option value="Andamento">Andamento</option>
+                    <option value="Pago Cliente">Pago Cliente</option>
+                    <option value="Pendência">Pendência</option>
+                    <option value="Cancelado">Cancelado</option>
+                </select>
+            </div>
+            <input type="hidden" id="modal-id">
+            <div class="modal-actions">
+                <button class="btn btn-cancel" onclick="closeModal()">Cancelar</button>
+                <button class="btn btn-save" onclick="saveManualChange()">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="ATUALIZAÇÃO.JS"></script>
+</body>
+</html>
