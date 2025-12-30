@@ -1,68 +1,121 @@
-/* =========================================
-   1. DEFINIÇÃO DE VARIÁVEIS (TEMA AZUL/CINZA DARK)
-   ========================================= */
+/* ==========================================================================
+   1. GLOBAIS E VARIÁVEIS (TEMA DO SISTEMA)
+   ========================================================================== */
+
 :root {
-  /* --- Paleta Base (Slate/Dark Blue) --- */
-  --page-bg: #0f172a; /* Fundo da página */
-  --card-bg: #1e293b; /* Fundo dos Cards/Sidebar */
-  --card-border: #334155; /* Bordas sutis */
+  /* --- Cores Base (Light Mode Padrão) --- */
+  --fundo-corpo: #f0f2f5;
+  --fundo-cartao: #ffffff;
+  --fundo-input: #ffffff;
+  --fundo-hover: #f0f2f5;
+  --fundo-secundario: #f8f9fa;
 
-  /* --- Tipografia --- */
-  --text-primary: #f1f5f9; /* Texto principal (Branco gelo) */
-  --text-secondary: #94a3b8; /* Texto secundário (Cinza azulado) */
+  /* --- Texto e Bordas --- */
+  --texto-principal: #292929;
+  --texto-suave: #555555;
+  --cor-borda: #e0e0e0;
+  --sombra: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --sombra-hover: 0 10px 20px -5px rgba(0, 0, 0, 0.1);
 
-  /* --- Cor Destaque (Primary) --- */
-  --primary-color: #38bdf8; /* Azul Cyan vibrante */
-  --primary-hover: #0ea5e9;
-  --primary-light: rgba(56, 189, 248, 0.15);
+  /* --- Cores de Ação e Status --- */
+  --azul-principal: #02abf8; /* Primary */
+  --azul-principal2: #0075ac; /* Hover Primary */
+  --verde-sucesso: #28a745;
+  --vermelho-erro: #dc3545;
+  --azul-info: #007bff;
+  --amarelo-alerta: #fbbf24; /* Adicionado para Pendência */
 
-  /* --- Status Cores --- */
-  --danger-color: #f87171; /* Vermelho suave */
-  --success-color: #34d399; /* Verde menta */
-  --warning-color: #fbbf24; /* Amarelo ouro */
-  --info-color: #60a5fa; /* Azul claro */
+  /* --- Cores Específicas do Negócio --- */
+  --cor-formalizacao: #9ca3af;
+  --cor-pago: #2dd4bf;
 
-  /* --- Cores de Negócio --- */
-  --formalizacao-color: #cbd5e1;
-  --pago-color: #2dd4bf;
-
-  /* --- Sombras e Layout --- */
-  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+  /* --- Layout --- */
   --sidebar-width: 80px;
-  --border-radius-lg: 16px;
-  --border-radius-md: 10px;
+  --border-radius-card: 16px;
+  --border-radius-input: 8px;
 }
 
-/* =========================================
-   2. LOADER (Tela de Carregamento)
-   ========================================= */
+/* --- MODO ESCURO (Redefinição de Variáveis) --- */
+body.dark {
+  background-color: #000000; /* Fundo preto total conforme seu pedido */
+
+  --fundo-corpo: #18191a;
+  --fundo-cartao: #242526;
+  --fundo-input: #3a3b3c;
+  --fundo-hover: #3a3b3c;
+  --fundo-secundario: #292929;
+
+  --texto-principal: #e4e6eb;
+  --texto-suave: #b0b3b8;
+  --cor-borda: #3e4042;
+  --sombra: 0 2px 4px rgba(0, 0, 0, 0.2);
+  --sombra-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+}
+
+/* ==========================================================================
+   2. RESET E ESTRUTURA
+   ========================================================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", "Segoe UI", sans-serif; /* Mantive Poppins pela estética */
+  transition: background-color 0.3s ease, color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+body {
+  background-color: var(--fundo-corpo);
+  color: var(--texto-principal);
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--fundo-corpo);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--cor-borda);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--texto-suave);
+}
+
+/* Loader */
 #image-loader {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: var(--page-bg);
+  background-color: var(--fundo-corpo);
   z-index: 9999;
   display: flex;
   justify-content: center;
   align-items: center;
   transition: opacity 0.5s ease;
 }
-
 .loader-spinner {
   width: 80px;
   height: 80px;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
 }
-
-/* Animação de Pulsar na Logo */
-@keyframes pulse-logo {
-  0% {
+.loader-logo {
+  filter: drop-shadow(0 0 10px var(--azul-principal));
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%,
+  100% {
     transform: scale(1);
     opacity: 1;
   }
@@ -70,78 +123,33 @@
     transform: scale(1.1);
     opacity: 0.8;
   }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
 }
 
-.loader-logo {
-  animation: pulse-logo 2s infinite ease-in-out;
-  filter: drop-shadow(0 0 10px var(--primary-color));
-}
-
-/* =========================================
-   3. RESET E ESTRUTURA GLOBAL
-   ========================================= */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Inter", "Roboto", sans-serif;
-  transition: all 0.25s ease;
-}
-
-body {
-  background-color: var(--page-bg);
-  color: var(--text-primary);
-  display: flex;
-  height: 100vh;
-  overflow: hidden;
-}
-
-/* Scrollbar Personalizada */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-::-webkit-scrollbar-track {
-  background: var(--page-bg);
-}
-::-webkit-scrollbar-thumb {
-  background: var(--card-border);
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--text-secondary);
-}
-
-/* =========================================
-   4. SIDEBAR
-   ========================================= */
+/* ==========================================================================
+   3. SIDEBAR
+   ========================================================================== */
 .sidebar {
   width: var(--sidebar-width);
-  background-color: var(--card-bg);
+  background-color: var(--fundo-cartao);
   height: 100vh;
   padding: 20px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-right: 1px solid var(--card-border);
+  border-right: 1px solid var(--cor-borda);
   z-index: 100;
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--sombra);
 }
 
 .sidebar-header {
   margin-bottom: 35px;
+  width: 100%;
   display: flex;
   justify-content: center;
-  width: 100%;
 }
 .logo-icon {
   font-size: 1.8rem;
-  color: var(--primary-color);
-  filter: drop-shadow(0 0 5px var(--primary-light));
+  color: var(--azul-principal);
 }
 
 .nav-list {
@@ -162,21 +170,18 @@ body {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: var(--text-secondary);
+  color: var(--texto-suave);
 }
-
-.sidebar li i {
-  font-size: 1.3rem;
-}
-
 .sidebar li:hover {
-  background-color: rgba(255, 255, 255, 0.05);
-  color: var(--primary-color);
+  background-color: var(--fundo-hover);
+  color: var(--azul-principal);
 }
 .sidebar li.active {
-  background-color: var(--primary-light);
-  color: var(--primary-color);
-  box-shadow: 0 0 15px var(--primary-light);
+  background-color: rgba(2, 171, 248, 0.15);
+  color: var(--azul-principal);
+}
+.sidebar li i {
+  font-size: 1.3rem;
 }
 
 /* Tooltip */
@@ -185,8 +190,8 @@ body {
   left: 70px;
   top: 50%;
   transform: translateY(-50%);
-  background-color: var(--primary-color);
-  color: #0f172a;
+  background-color: var(--azul-principal);
+  color: #fff;
   padding: 6px 12px;
   border-radius: 6px;
   font-size: 0.85rem;
@@ -195,34 +200,23 @@ body {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  box-shadow: var(--shadow-lg);
   z-index: 200;
-}
-.tooltip::before {
-  content: "";
-  position: absolute;
-  left: -5px;
-  top: 50%;
-  transform: translateY(-50%);
-  border-width: 5px;
-  border-style: solid;
-  border-color: transparent var(--primary-color) transparent transparent;
+  box-shadow: var(--sombra);
 }
 .sidebar li:hover .tooltip {
   opacity: 1;
   visibility: visible;
   left: 65px;
 }
-
 .sidebar-footer {
   margin-top: auto;
   padding-bottom: 20px;
-  color: var(--text-secondary);
+  color: var(--texto-suave);
 }
 
-/* =========================================
-   5. CONTEÚDO PRINCIPAL
-   ========================================= */
+/* ==========================================================================
+   4. CONTEÚDO PRINCIPAL & HEADER
+   ========================================================================== */
 .main-content {
   flex: 1;
   padding: 30px;
@@ -232,13 +226,77 @@ body {
   margin-bottom: 25px;
   font-size: 1.8rem;
   font-weight: 700;
-  color: var(--text-primary);
-  letter-spacing: -0.5px;
+  color: var(--texto-principal);
 }
 
-/* =========================================
-   6. KPIS (Topo)
-   ========================================= */
+/* --- BARRA DE FILTROS (Inputs) --- */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+}
+
+/* Box do Input (Estilo Cartão) */
+.date-box {
+  display: flex;
+  align-items: center;
+  background-color: var(--fundo-input); /* Usa a variável do tema */
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--border-radius-input);
+  padding: 0 15px;
+  height: 45px;
+  width: 220px;
+}
+.date-box:focus-within {
+  border-color: var(--azul-principal);
+}
+
+.date-label {
+  color: var(--texto-suave);
+  font-weight: bold;
+  font-size: 0.75rem;
+  margin-right: 10px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.input-transparent {
+  background: transparent;
+  border: none;
+  color: var(--texto-principal);
+  font-size: 0.9rem;
+  width: 100%;
+  outline: none;
+  cursor: pointer;
+}
+/* Ícone do calendário: Inverte a cor se for dark mode */
+body.dark .input-transparent {
+  color-scheme: dark;
+}
+
+.btn-filtrar {
+  background-color: var(--azul-principal);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius-input);
+  height: 45px;
+  padding: 0 25px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-transform: uppercase;
+}
+.btn-filtrar:hover {
+  background-color: var(--azul-principal2);
+}
+
+/* ==========================================================================
+   5. CARDS DE KPI
+   ========================================================================== */
 .kpi-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -246,11 +304,11 @@ body {
   margin-bottom: 30px;
 }
 .kpi-card {
-  background: var(--card-bg);
+  background: var(--fundo-cartao);
   padding: 25px;
-  border-radius: var(--border-radius-lg);
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--card-border);
+  border-radius: var(--border-radius-card);
+  box-shadow: var(--sombra);
+  border: 1px solid var(--cor-borda);
   position: relative;
   overflow: hidden;
 }
@@ -261,30 +319,29 @@ body {
   top: 0;
   height: 100%;
   width: 4px;
-  background: var(--primary-color);
+  background: var(--azul-principal);
 }
 .kpi-card h3 {
   font-size: 0.8rem;
-  color: var(--text-secondary);
+  color: var(--texto-suave);
   margin-bottom: 10px;
   text-transform: uppercase;
-  letter-spacing: 1px;
   font-weight: 600;
 }
 .kpi-card .value {
   font-size: 1.8rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--texto-principal);
 }
 .kpi-card .subtext {
   font-size: 0.85rem;
-  color: var(--text-secondary);
+  color: var(--texto-suave);
   margin-top: 5px;
 }
 
-/* =========================================
-   7. STATUS CARDS (Grid Colorido)
-   ========================================= */
+/* ==========================================================================
+   6. CARDS DE STATUS
+   ========================================================================== */
 .status-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -292,20 +349,20 @@ body {
   margin-bottom: 30px;
 }
 .status-card {
-  background-color: var(--card-bg);
-  border: 1px solid var(--card-border);
-  color: var(--text-primary);
+  background-color: var(--fundo-cartao);
+  border: 1px solid var(--cor-borda);
+  color: var(--texto-principal);
   padding: 20px;
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--border-radius-card);
   position: relative;
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--sombra);
   cursor: pointer;
   overflow: hidden;
 }
 .status-card:hover {
   transform: translateY(-5px);
   border-color: var(--cor-card);
-  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--sombra-hover);
 }
 .status-card::after {
   content: "";
@@ -318,22 +375,20 @@ body {
   background: var(--cor-card);
   box-shadow: 0 0 8px var(--cor-card);
 }
-
 .status-card h4 {
   font-size: 0.9rem;
   margin-bottom: 5px;
   font-weight: 600;
-  color: var(--text-secondary);
+  color: var(--texto-suave);
 }
 .status-card .status-value {
   font-size: 1.4rem;
   font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 2px;
+  color: var(--texto-principal);
 }
 .status-card .status-count {
   font-size: 0.75rem;
-  color: var(--text-secondary);
+  color: var(--texto-suave);
   opacity: 0.8;
 }
 .status-card i {
@@ -345,50 +400,53 @@ body {
   opacity: 0.1;
 }
 
-/* Cores dos Status */
+/* Definição de Cores Dinâmicas dos Status */
 .bg-digitacao {
-  --cor-card: var(--success-color);
+  --cor-card: var(--verde-sucesso);
 }
 .bg-formalizacao {
-  --cor-card: var(--formalizacao-color);
+  --cor-card: var(--cor-formalizacao);
 }
 .bg-andamento {
-  --cor-card: var(--info-color);
+  --cor-card: var(--azul-info);
 }
 .bg-pago {
-  --cor-card: var(--pago-color);
+  --cor-card: var(--cor-pago);
 }
 .bg-cancelado {
-  --cor-card: var(--danger-color);
+  --cor-card: var(--vermelho-erro);
 }
 .bg-pendencia {
-  --cor-card: var(--warning-color);
+  --cor-card: var(--amarelo-alerta);
 }
 
-/* =========================================
-   8. TABELA E GRÁFICO (Grid)
-   ========================================= */
+/* ==========================================================================
+   7. DASHBOARD GRID (TABELA E GRÁFICO)
+   ========================================================================== */
+/* --- CORREÇÃO DE ALINHAMENTO (MESMA ALTURA) --- */
+
 .dashboard-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 2fr 1fr; /* Tabela ocupa 2/3, Gráfico ocupa 1/3 */
   gap: 25px;
   width: 100%;
   margin-bottom: 30px;
-  align-items: start;
+  align-items: stretch; /* <--- MUDANÇA AQUI: Isso força a altura igual */
 }
+
 @media (max-width: 1200px) {
   .dashboard-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* Em telas menores, empilha */
   }
 }
 
 .table-container,
 .chart-container {
-  background: var(--card-bg);
-  border-radius: var(--border-radius-lg);
-  box-shadow: var(--shadow-sm);
+  background: var(--fundo-cartao);
+  border-radius: var(--border-radius-card);
+  box-shadow: var(--sombra);
   padding: 25px;
-  border: 1px solid var(--card-border);
+  border: 1px solid var(--cor-borda);
 }
 .chart-container {
   min-height: 400px;
@@ -412,9 +470,10 @@ body {
 }
 .table-header h3 {
   font-size: 1.1rem;
-  color: var(--text-primary);
+  color: var(--texto-principal);
 }
 
+/* Tabela */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -423,34 +482,136 @@ th,
 td {
   padding: 14px;
   text-align: left;
-  border-bottom: 1px solid var(--card-border);
-  color: var(--text-secondary);
+  border-bottom: 1px solid var(--cor-borda);
+  color: var(--texto-suave);
 }
 th {
-  color: var(--primary-color);
+  color: var(--azul-principal);
   font-weight: 600;
   font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 td {
-  color: var(--text-primary);
+  color: var(--texto-principal);
   font-size: 0.9rem;
 }
 tr:hover td {
-  background-color: rgba(255, 255, 255, 0.02);
+  background-color: var(--fundo-hover);
 }
 
-/* =========================================
-   9. MODAL E FORMULÁRIOS
-   ========================================= */
+/* Badges da Tabela */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  min-width: 100px;
+}
+.status-success {
+  background-color: rgba(40, 167, 69, 0.15);
+  color: var(--verde-sucesso);
+}
+.status-neutral {
+  background-color: rgba(156, 163, 175, 0.15);
+  color: var(--cor-formalizacao);
+}
+.status-info {
+  background-color: rgba(0, 123, 255, 0.15);
+  color: var(--azul-info);
+}
+.status-warning {
+  background-color: rgba(251, 191, 36, 0.15);
+  color: var(--amarelo-alerta);
+}
+.status-danger {
+  background-color: rgba(220, 53, 69, 0.15);
+  color: var(--vermelho-erro);
+}
+
+/* Botões de Ação da Tabela */
+.btn-action {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+}
+.btn-edit {
+  color: var(--texto-suave);
+  border-color: var(--cor-borda);
+}
+.btn-edit:hover {
+  color: var(--azul-principal);
+  border-color: var(--azul-principal);
+}
+.btn-delete {
+  color: var(--vermelho-erro);
+  border-color: var(--cor-borda);
+}
+.btn-delete:hover {
+  background-color: var(--vermelho-erro);
+  color: #fff;
+}
+
+/* ==========================================================================
+   8. GRÁFICO WIDE (Banner)
+   ========================================================================== */
+.chart-full-width {
+  width: 100%;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.chart-card {
+  background-color: var(--fundo-cartao);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--border-radius-card);
+  padding: 25px;
+  box-shadow: var(--sombra);
+}
+
+.card-header {
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--cor-borda);
+}
+.card-header h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--texto-principal);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+}
+.card-header h3 i {
+  color: var(--azul-principal);
+  font-size: 1.2rem;
+}
+.chart-wrapper-wide {
+  position: relative;
+  height: 350px;
+  width: 100%;
+}
+
+/* ==========================================================================
+   9. MODAL
+   ========================================================================== */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(15, 23, 42, 0.8);
+  background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(5px);
   display: none;
   justify-content: center;
@@ -458,17 +619,18 @@ tr:hover td {
   z-index: 1000;
 }
 .modal {
-  background: var(--card-bg);
+  background: var(--fundo-cartao);
   padding: 30px;
-  border-radius: 24px;
-  width: 400px;
-  box-shadow: var(--shadow-lg);
-  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  width: 500px;
+  max-width: 90%;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--cor-borda);
 }
 .modal h2 {
   margin-bottom: 25px;
-  color: var(--text-primary);
-  border-left: 4px solid var(--primary-color);
+  color: var(--texto-principal);
+  border-left: 4px solid var(--azul-principal);
   padding-left: 15px;
 }
 
@@ -476,23 +638,22 @@ tr:hover td {
   display: block;
   margin-bottom: 8px;
   font-size: 0.9rem;
-  color: var(--text-secondary);
+  color: var(--texto-suave);
 }
 .form-group input,
 .form-group select {
   width: 100%;
   padding: 12px;
-  border-radius: var(--border-radius-md);
-  background-color: var(--page-bg);
-  color: var(--text-primary);
-  border: 1px solid var(--card-border);
+  border-radius: var(--border-radius-input);
+  background-color: var(--fundo-input);
+  color: var(--texto-principal);
+  border: 1px solid var(--cor-borda);
   font-size: 0.95rem;
   outline: none;
 }
 .form-group input:focus,
 .form-group select:focus {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px var(--primary-light);
+  border-color: var(--azul-principal);
 }
 
 .modal-actions {
@@ -502,10 +663,9 @@ tr:hover td {
   margin-top: 25px;
 }
 
-/* Botões */
 .btn {
   padding: 10px 20px;
-  border-radius: var(--border-radius-md);
+  border-radius: var(--border-radius-input);
   border: none;
   cursor: pointer;
   font-weight: 600;
@@ -515,19 +675,142 @@ tr:hover td {
   align-items: center;
 }
 .btn-save {
-  background: var(--primary-color);
-  color: #0f172a;
+  background: var(--azul-principal);
+  color: #fff;
 }
 .btn-save:hover {
-  background: var(--primary-hover);
-  box-shadow: 0 0 15px var(--primary-light);
+  background: var(--azul-principal2);
 }
 .btn-cancel {
   background: transparent;
-  border: 1px solid var(--card-border);
-  color: var(--text-secondary);
+  border: 1px solid var(--cor-borda);
+  color: var(--texto-suave);
 }
 .btn-cancel:hover {
-  border-color: var(--text-primary);
-  color: var(--text-primary);
+  border-color: var(--texto-principal);
+  color: var(--texto-principal);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .date-box,
+  .btn-filtrar {
+    width: 100%;
+  }
+  .chart-wrapper-wide {
+    height: 250px;
+  }
+}
+/* --- BARRA DE PESQUISA --- */
+.search-box {
+  display: flex;
+  align-items: center;
+  background-color: var(--fundo-input); /* Usa sua variável de tema */
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--border-radius-input);
+  padding: 0 15px;
+  height: 45px;
+  width: 350px; /* Um pouco mais largo que as datas */
+  margin-left: 15px; /* Separa do botão Filtrar */
+  transition: border-color 0.3s ease;
+}
+
+.search-box:focus-within {
+  border-color: var(--azul-principal); /* Fica azul ao clicar */
+}
+
+.search-icon {
+  color: var(--texto-suave);
+  margin-right: 10px;
+  font-size: 0.9rem;
+}
+
+/* Ajuste Responsivo */
+@media (max-width: 900px) {
+  .search-box {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 10px;
+  }
+}
+/* --- BARRA DE PESQUISA COMBO (DROPDOWN + INPUT) --- */
+
+.search-box-group {
+  display: flex;
+  align-items: center;
+  margin-left: 15px;
+  height: 45px; /* Mesma altura dos outros inputs */
+}
+
+/* O Dropdown (Esquerda) */
+.search-select {
+  background-color: var(--fundo-input);
+  border: 1px solid var(--cor-borda);
+  border-right: none; /* Remove a borda direita para grudar no input */
+  color: var(--texto-principal);
+  padding: 0 10px;
+  height: 100%;
+  border-radius: var(--border-radius-input) 0 0 var(--border-radius-input); /* Arredonda só a esquerda */
+  outline: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  min-width: 110px;
+}
+
+.search-select:focus {
+  border-color: var(--azul-principal);
+}
+
+/* O Campo de Texto (Meio) */
+.search-input {
+  background-color: var(--fundo-input);
+  border: 1px solid var(--cor-borda);
+  border-left: 1px solid var(--cor-borda); /* Borda sutil entre eles */
+  border-right: none;
+  color: var(--texto-principal);
+  padding: 0 15px;
+  height: 100%;
+  width: 250px; /* Largura da área de texto */
+  outline: none;
+  font-size: 0.9rem;
+}
+
+.search-input:focus {
+  border-color: var(--azul-principal);
+  z-index: 1; /* Traz pra frente pra mostrar a borda completa */
+}
+
+/* O Botão de Lupa (Direita) - Opcional, mas fica bonito igual a imagem */
+.btn-search-icon {
+  background-color: var(--azul-principal); /* Azul escuro da imagem */
+  border: 1px solid var(--azul-principal);
+  color: white;
+  height: 100%;
+  padding: 0 15px;
+  border-radius: 0 var(--border-radius-input) var(--border-radius-input) 0; /* Arredonda só a direita */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-search-icon:hover {
+  background-color: var(--azul-principal2);
+}
+
+/* Responsividade */
+@media (max-width: 900px) {
+  .search-box-group {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 10px;
+  }
+  .search-input {
+    width: 100%; /* Estica no mobile */
+  }
 }

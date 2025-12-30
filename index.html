@@ -8,8 +8,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
+    />
     />
 
     <link
@@ -74,8 +75,43 @@
 
     <main class="main-content">
       <header>
-        <h1 class="header-title">Visão Geral da Operação</h1>
+        <h1 class="header-title">Dashboard Siape</h1>
       </header>
+
+      <div class="filter-bar">
+        <div class="date-box">
+          <span class="date-label">DE</span>
+          <input type="date" id="data-inicio" class="input-transparent" />
+        </div>
+
+        <div class="date-box">
+          <span class="date-label">ATÉ</span>
+          <input type="date" id="data-fim" class="input-transparent" />
+        </div>
+
+        <button class="btn-filtrar" onclick="aplicarFiltro()">
+          <i class="fas fa-filter"></i> FILTRAR
+        </button>
+
+        <div class="search-box-group">
+          <select id="tipo-busca" class="search-select">
+            <option value="nome">Nome</option>
+            <option value="cpf">CPF</option>
+            <option value="matricula">Matrícula</option>
+            <option value="telefone">Telefone</option>
+          </select>
+          <input
+            type="text"
+            id="input-busca"
+            class="search-input"
+            placeholder="Buscar Cliente..."
+            onkeyup="aplicarBusca()"
+          />
+          <button class="btn-search-icon">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </div>
 
       <section class="kpi-container">
         <div class="kpi-card">
@@ -150,18 +186,28 @@
         <div class="table-container">
           <div class="table-header">
             <h3>Últimos Contratos</h3>
-            <button class="btn btn-save" onclick="simularImportacao()">
-              <i class="fas fa-sync"></i> Atualizar
-            </button>
+
+            <div style="display: flex; gap: 10px">
+              <button class="btn btn-save" onclick="openAddModal()">
+                <i class="fas fa-plus"></i> Novo
+              </button>
+              <button class="btn btn-cancel" onclick="simularImportacao()">
+                <i class="fas fa-sync"></i> Atualizar
+              </button>
+            </div>
           </div>
 
           <div class="table-responsive">
             <table>
               <thead>
                 <tr>
-                  <th>Proposta</th>
+                  <th>ID</th>
                   <th>Cliente</th>
-                  <th>Valor</th>
+                  <th>Banco</th>
+                  <th>Parcela</th>
+                  <th>Saldo</th>
+                  <th>Liberado</th>
+                  <th>Telefone</th>
                   <th>Data</th>
                   <th>Status</th>
                   <th>Ação</th>
@@ -181,20 +227,55 @@
           </div>
         </div>
       </section>
+
+      <section class="chart-full-width">
+        <div class="chart-card">
+          <div class="card-header">
+            <h3>
+              <i class="fas fa-chart-area"></i> Evolução Diária da Produção
+            </h3>
+          </div>
+          <div class="chart-wrapper-wide">
+            <canvas id="graficoLinha"></canvas>
+          </div>
+        </div>
+      </section>
     </main>
 
-    <div class="modal-overlay" id="editModal">
+    <div class="modal-overlay" id="addModal">
       <div class="modal">
-        <h2>Alterar Status</h2>
+        <h2>Novo Contrato</h2>
         <form onsubmit="return false;">
           <div class="form-group">
-            <label>Cliente</label>
-            <input type="text" id="modal-cliente" disabled />
+            <label>Nome do Cliente</label>
+            <input
+              type="text"
+              id="new-cliente"
+              placeholder="Ex: João da Silva"
+            />
           </div>
           <br />
+
           <div class="form-group">
-            <label>Novo Status</label>
-            <select id="modal-status">
+            <label>Valor (R$)</label>
+            <input
+              type="number"
+              id="new-valor"
+              step="0.01"
+              placeholder="Ex: 5000.00"
+            />
+          </div>
+          <br />
+
+          <div class="form-group">
+            <label>Data</label>
+            <input type="date" id="new-data" />
+          </div>
+          <br />
+
+          <div class="form-group">
+            <label>Status Inicial</label>
+            <select id="new-status">
               <option value="Digitação">Digitação</option>
               <option value="Formalização">Formalização</option>
               <option value="Andamento">Andamento</option>
@@ -203,20 +284,18 @@
               <option value="Cancelado">Cancelado</option>
             </select>
           </div>
-          <input type="hidden" id="modal-id" />
 
           <div class="modal-actions">
-            <button class="btn btn-cancel" onclick="closeModal()">
+            <button class="btn btn-cancel" onclick="closeAddModal()">
               Cancelar
             </button>
-            <button class="btn btn-save" onclick="saveManualChange()">
-              Salvar
+            <button class="btn btn-save" onclick="saveNewContrato()">
+              Adicionar
             </button>
           </div>
         </form>
       </div>
     </div>
-
     <script src="ATUALIZAÇÃO.JS"></script>
 
     <script>
